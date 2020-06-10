@@ -1,7 +1,7 @@
 /*
 规则：
 1：例如：index/index, shop/goods/list 结尾以index为结尾的，默认去掉index
-2：
+2： 
 */
 
 
