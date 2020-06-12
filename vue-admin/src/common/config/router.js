@@ -13,14 +13,17 @@ let routes = [
       component:'layout',
 	  children:[
 	     {
+			 meta:{title:'首页'},
 			 component:'index/index' //首页
 		 },
 		 {
+			 meta:{title:'商品列表'},
 			 component:'shop/goods/list' //商品列表
 		 }
 	  ]
     },
 	{
+		meta:{title:'登录页'},
 		component: 'login/index' //登录页面
 	},
 	{
