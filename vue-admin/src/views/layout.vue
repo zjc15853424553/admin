@@ -38,7 +38,7 @@
 				<!-- 右侧组件内容显示 -->
 				<el-main>
 					<!-- 面包屑导航 -->
-					<div style="padding: 20px;margin: -20px;" class="border-bottom" v-if="Bran.length >0">
+					<div style="padding: 20px;margin: -20px;" class="border-bottom mb-3" v-if="Bran.length >0">
 						<el-breadcrumb separator-class="el-icon-arrow-right">
 						  <el-breadcrumb-item v-for="(item,index) in Bran" :key="index" :to="{ path: item.path }">{{item.title}}</el-breadcrumb-item>
 						</el-breadcrumb>
@@ -102,7 +102,8 @@
 					arr.push({
 						name:v.name,
 						path:v.path,
-						title:v.meta.title
+						title:v.meta.title,
+						pathname:v.pathname
 					})
 				})
 				//判断arr数组的长度，如果长度大于0说明目前的路由不在首页，往数组最前面添加后台首页
@@ -114,19 +115,21 @@
 					})
 				}
 				this.Bran = arr;
-				console.log(arr)
 			 },
 			 //头部菜单选中显示
 		      handleSelect(key, keyPath) {
 		        console.log(key, keyPath);
 				this.navBar.active = key;
+				let pathname = this.leftBarList[this.lefCurrentIndex].pathname;
+				console.log(pathname,'pathnamanamenamename')
+				this.$router.push({name:pathname})
 		      },
 			  //左边菜单栏下标选中
 			  slideSelect(key,keyPath){
 				console.log(key, keyPath,'123123123');
 				this.lefCurrentIndex = key;
-				console.log(this.navBar.list[this.navBar.active],'oooooo')
-				// this.$router.push({url})
+				let pathname = this.leftBarList[key].pathname;
+				this.$router.push({name:pathname})
 			  }
 		    }
 	}
