@@ -8,11 +8,13 @@ export default {
 				subActive: '0',
 				submenu: [{
 						name: '首页',
-						icon: 'el-icon-s-home'
+						icon: 'el-icon-s-home',
+						pathname:'index'
 					},
 					{
 						name: '商品',
-						icon: 'el-icon-s-claim'
+						icon: 'el-icon-s-claim',
+						pathname:'shop_goods_list'
 					}
 				]
 			},

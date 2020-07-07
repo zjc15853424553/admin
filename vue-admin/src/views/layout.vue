@@ -25,10 +25,10 @@
 			  </el-menu>
 		  </el-header>
 		  <!-- 显示内容主体部分 -->
-			  <el-container style="height: 100%;padding-bottom: 60px;">
+			  <el-container style="height: 100%;">
 				  <!-- 左侧菜单栏 -->
 				<el-aside width="200px">
-					<el-menu style="height: 100%;" :default-active="lefCurrentIndex" @select="slideSelect">
+					<el-menu style="height: 100%;" :default-active="lefCurrentIndex"  @select="slideSelect">
 					  <el-menu-item :index="index | numString" v-for="(item,index) in leftBarList" :key="index">
 						<i :class="item.icon"></i>
 						<span slot="title">{{item.name}}</span>
@@ -36,14 +36,22 @@
 					</el-menu>
 				</el-aside>
 				<!-- 右侧组件内容显示 -->
-				<el-main>
+				<el-main class="bg-light">
 					<!-- 面包屑导航 -->
-					<div style="padding: 20px;margin: -20px;" class="border-bottom" v-if="Bran.length >0">
+					<div style="padding: 20px;margin: -20px;" class="border-bottom mb-3 bg-white" v-if="Bran.length >0">
 						<el-breadcrumb separator-class="el-icon-arrow-right">
 						  <el-breadcrumb-item v-for="(item,index) in Bran" :key="index" :to="{ path: item.path }">{{item.title}}</el-breadcrumb-item>
 						</el-breadcrumb>
 					</div>
+					
 					<router-view/>
+					<div style="height: 1000px;"></div>
+					 <el-backtop target=".el-main" :bottom="100">
+					    <div
+					      style="{height: 100%;width: 100%; background-color: #f2f5f6;box-shadow: 0 0 6px rgba(0,0,0, .12);text-align: center;line-height: 40px;color: #1989fa;}">
+					      UP
+					    </div>
+					  </el-backtop>
 				</el-main>
 			  </el-container>
 		</el-container>
@@ -64,6 +72,7 @@
 			this.navBar = this.$conf.navBar;
 			//开始就调用这个获取面包屑导航路由的方法
 			this.getRouterBran()
+			this._initNavBar()
 		},
 		computed:{
 			//根据点击顶部的nav来决定显示那个submenu
@@ -78,16 +87,30 @@
 				set(val){
 				    this.navBar.list[this.navBar.active].subActive = val;
 				}
-				
 			}
 		},
 		watch:{
-			//监听路由的改变再次触发这个方法，相遇刷新这个组件
-			$route(to,form){
+			//监听路由的改变再次触发这个方法，刷新这个组件
+			'$route'(to,form){
+				console.log('gaibianle')
+				//监听路由改变的时候进行本地存储
+				localStorage.setItem('navActive',JSON.stringify({
+					top:this.navBar.active,
+					left:this.lefCurrentIndex
+				}))
 				this.getRouterBran()
 			}
 		},
 		 methods: {
+			 _initNavBar(){
+				 let r = localStorage.getItem('navActive')
+				 if(r){
+					 r = JSON.parse(r)
+					 console.log(r)
+					 this.navBar.active = r.top;
+					 this.lefCurrentIndex = r.left;
+				 }
+			 },
 			 //面包屑导航
 			 getRouterBran(){
 			 	console.log(this.$route.matched)
@@ -98,7 +121,7 @@
 				//利用forEach进行循环 筛选出来除了首页之外的路由
 				a.forEach((v,k)=>{
 					//过滤掉layout和index，如果不是这两个进行push添加进数组中
-					if(v.name == 'layout' || v.name == 'index') return
+					if(v.name === 'layout' || v.name === 'index') return
 					arr.push({
 						name:v.name,
 						path:v.path,
@@ -107,26 +130,32 @@
 				})
 				//判断arr数组的长度，如果长度大于0说明目前的路由不在首页，往数组最前面添加后台首页
 				if(arr.length >0){
-					arr.unshift({
-						name:'index',
-						path:'/index',
-						title:'后台首页'
-					})
-				}
+					arr.unshift({ name:'index',path:'/index',title:'后台首页' })
+					}
 				this.Bran = arr;
 				console.log(arr)
 			 },
 			 //头部菜单选中显示
 		      handleSelect(key, keyPath) {
-		        console.log(key, keyPath);
+				  console.log(key,'keykeykeyu')
 				this.navBar.active = key;
+				
+				this.lefCurrentIndex = '0'
+				//当左侧菜单的长度大于0时进行下一步代码
+				if(this.leftBarList.length > 0){
+					//默认选择第一个
+					this.$router.push({
+						name:this.leftBarList[this.lefCurrentIndex].pathname
+					})
+				}
 		      },
 			  //左边菜单栏下标选中
 			  slideSelect(key,keyPath){
-				console.log(key, keyPath,'123123123');
 				this.lefCurrentIndex = key;
-				console.log(this.navBar.list[this.navBar.active],'oooooo')
-				// this.$router.push({url})
+				console.log(this.leftBarList[key],'oooooo')
+				//这里点击侧边导航跳转到相对应的路由页面，需要拿到this.navBar.list[this.navBar.active].submenu[key].pathname;   路由跳转根据name来进行跳转 需要在config.js中每一个对象中添加对应的pathname
+				let name = this.leftBarList[key].pathname;
+				this.$router.push({name:name})
 			  }
 		    }
 	}
