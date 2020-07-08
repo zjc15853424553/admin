@@ -28,7 +28,8 @@
 			  <el-container style="height: 100%;">
 				  <!-- 左侧菜单栏 -->
 				<el-aside width="200px">
-					<el-menu style="height: 100%;" :default-active="lefCurrentIndex"  @select="slideSelect">
+					<el-menu  background-color="#545c64"  text-color="#fff"
+      active-text-color="#ffd04b" style="height: 100%;" :default-active="lefCurrentIndex"  @select="slideSelect">
 					  <el-menu-item :index="index | numString" v-for="(item,index) in leftBarList" :key="index">
 						<i :class="item.icon"></i>
 						<span slot="title">{{item.name}}</span>
@@ -36,26 +37,20 @@
 					</el-menu>
 				</el-aside>
 				<!-- 右侧组件内容显示 -->
-				<el-main class="bg-light">
+				<el-main class="bg-light" style="padding-bottom: 60px;position: relative;">
 					<!-- 面包屑导航 -->
-<<<<<<< HEAD
 					<div style="padding: 20px;margin: -20px;" class="border-bottom mb-3 bg-white" v-if="Bran.length >0">
-=======
-					<div style="padding: 20px;margin: -20px;" class="border-bottom mb-3" v-if="Bran.length >0">
->>>>>>> 0665d71f042de65a0e5014644dfc3b3f37a1098e
 						<el-breadcrumb separator-class="el-icon-arrow-right">
 						  <el-breadcrumb-item v-for="(item,index) in Bran" :key="index" :to="{ path: item.path }">{{item.title}}</el-breadcrumb-item>
 						</el-breadcrumb>
 					</div>
-					
-					<router-view/>
-					<div style="height: 1000px;"></div>
-					 <el-backtop target=".el-main" :bottom="100">
+					 <el-backtop target=".el-main" :bottom="100" :visibility-height='600'>
 					    <div
 					      style="{height: 100%;width: 100%; background-color: #f2f5f6;box-shadow: 0 0 6px rgba(0,0,0, .12);text-align: center;line-height: 40px;color: #1989fa;}">
 					      UP
 					    </div>
 					  </el-backtop>
+					  <router-view/>
 				</el-main>
 			  </el-container>
 		</el-container>
@@ -98,9 +93,11 @@
 			'$route'(to,form){
 				console.log('gaibianle')
 				//监听路由改变的时候进行本地存储
+				console.log(this.navBar.active,'toubu')
+				console.log(this.lefCurrentIndex,'dibu')
 				localStorage.setItem('navActive',JSON.stringify({
-					top:this.navBar.active,
-					left:this.lefCurrentIndex
+					top:this.navBar.active || '0',
+					left:this.lefCurrentIndex || '0'
 				}))
 				this.getRouterBran()
 			}
@@ -129,8 +126,7 @@
 					arr.push({
 						name:v.name,
 						path:v.path,
-						title:v.meta.title,
-						pathname:v.pathname
+						title:v.meta.title
 					})
 				})
 				//判断arr数组的长度，如果长度大于0说明目前的路由不在首页，往数组最前面添加后台首页
@@ -141,10 +137,14 @@
 			 },
 			 //头部菜单选中显示
 		      handleSelect(key, keyPath) {
-				  console.log(key,'keykeykeyu')
+				if (key === '6-1') {
+					return console.log('修改资料')
+				}
+				if (key === '6-2') {
+					// 退出登录
+					return console.log('退出登录')
+				}
 				this.navBar.active = key;
-<<<<<<< HEAD
-				
 				this.lefCurrentIndex = '0'
 				//当左侧菜单的长度大于0时进行下一步代码
 				if(this.leftBarList.length > 0){
@@ -153,24 +153,13 @@
 						name:this.leftBarList[this.lefCurrentIndex].pathname
 					})
 				}
-=======
-				let pathname = this.leftBarList[this.lefCurrentIndex].pathname;
-				console.log(pathname,'pathnamanamenamename')
-				this.$router.push({name:pathname})
->>>>>>> 0665d71f042de65a0e5014644dfc3b3f37a1098e
 		      },
 			  //左边菜单栏下标选中
 			  slideSelect(key,keyPath){
 				this.lefCurrentIndex = key;
-<<<<<<< HEAD
-				console.log(this.leftBarList[key],'oooooo')
 				//这里点击侧边导航跳转到相对应的路由页面，需要拿到this.navBar.list[this.navBar.active].submenu[key].pathname;   路由跳转根据name来进行跳转 需要在config.js中每一个对象中添加对应的pathname
 				let name = this.leftBarList[key].pathname;
 				this.$router.push({name:name})
-=======
-				let pathname = this.leftBarList[key].pathname;
-				this.$router.push({name:pathname})
->>>>>>> 0665d71f042de65a0e5014644dfc3b3f37a1098e
 			  }
 		    }
 	}

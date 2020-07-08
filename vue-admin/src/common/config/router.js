@@ -14,11 +14,15 @@ let routes = [
 	  children:[
 	     {
 			 meta:{title:'首页'},
-			 component:'index/index' //首页
+			 component:'index/index'
 		 },
 		 {
 			 meta:{title:'商品列表'},
-			 component:'shop/goods/list' //商品列表
+			 component:'shop/goods/list'
+		 },
+		 {
+			 meta:{title:'相册管理'},
+			 component:'image/index'
 		 }
 	  ]
     },
