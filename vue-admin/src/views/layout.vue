@@ -38,7 +38,11 @@
 				<!-- 右侧组件内容显示 -->
 				<el-main class="bg-light">
 					<!-- 面包屑导航 -->
+<<<<<<< HEAD
 					<div style="padding: 20px;margin: -20px;" class="border-bottom mb-3 bg-white" v-if="Bran.length >0">
+=======
+					<div style="padding: 20px;margin: -20px;" class="border-bottom mb-3" v-if="Bran.length >0">
+>>>>>>> 0665d71f042de65a0e5014644dfc3b3f37a1098e
 						<el-breadcrumb separator-class="el-icon-arrow-right">
 						  <el-breadcrumb-item v-for="(item,index) in Bran" :key="index" :to="{ path: item.path }">{{item.title}}</el-breadcrumb-item>
 						</el-breadcrumb>
@@ -125,7 +129,8 @@
 					arr.push({
 						name:v.name,
 						path:v.path,
-						title:v.meta.title
+						title:v.meta.title,
+						pathname:v.pathname
 					})
 				})
 				//判断arr数组的长度，如果长度大于0说明目前的路由不在首页，往数组最前面添加后台首页
@@ -133,12 +138,12 @@
 					arr.unshift({ name:'index',path:'/index',title:'后台首页' })
 					}
 				this.Bran = arr;
-				console.log(arr)
 			 },
 			 //头部菜单选中显示
 		      handleSelect(key, keyPath) {
 				  console.log(key,'keykeykeyu')
 				this.navBar.active = key;
+<<<<<<< HEAD
 				
 				this.lefCurrentIndex = '0'
 				//当左侧菜单的长度大于0时进行下一步代码
@@ -148,14 +153,24 @@
 						name:this.leftBarList[this.lefCurrentIndex].pathname
 					})
 				}
+=======
+				let pathname = this.leftBarList[this.lefCurrentIndex].pathname;
+				console.log(pathname,'pathnamanamenamename')
+				this.$router.push({name:pathname})
+>>>>>>> 0665d71f042de65a0e5014644dfc3b3f37a1098e
 		      },
 			  //左边菜单栏下标选中
 			  slideSelect(key,keyPath){
 				this.lefCurrentIndex = key;
+<<<<<<< HEAD
 				console.log(this.leftBarList[key],'oooooo')
 				//这里点击侧边导航跳转到相对应的路由页面，需要拿到this.navBar.list[this.navBar.active].submenu[key].pathname;   路由跳转根据name来进行跳转 需要在config.js中每一个对象中添加对应的pathname
 				let name = this.leftBarList[key].pathname;
 				this.$router.push({name:name})
+=======
+				let pathname = this.leftBarList[key].pathname;
+				this.$router.push({name:pathname})
+>>>>>>> 0665d71f042de65a0e5014644dfc3b3f37a1098e
 			  }
 		    }
 	}
