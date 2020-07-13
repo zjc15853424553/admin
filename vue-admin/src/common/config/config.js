@@ -13,8 +13,13 @@ export default {
 					},
 					{
 						name: '相册管理',
-						icon: 'el-icon-s-claim',
+						icon: 'el-icon-picture',
 						pathname:'image'
+					},
+					{
+						name: '商品列表',
+						icon: 'el-icon-s-claim',
+						pathname:'shop_goods_list'
 					}
 				]
 			},
