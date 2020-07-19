@@ -91,7 +91,8 @@
 		watch:{
 			//监听路由的改变再次触发这个方法，刷新这个组件
 			'$route'(to,form){
-				console.log('gaibianle')
+				console.log(to,'totototo')
+				console.log(form,'formform')
 				//监听路由改变的时候进行本地存储
 				console.log(this.navBar.active,'toubu')
 				console.log(this.lefCurrentIndex,'dibu')
@@ -122,7 +123,7 @@
 				//利用forEach进行循环 筛选出来除了首页之外的路由
 				a.forEach((v,k)=>{
 					//过滤掉layout和index，如果不是这两个进行push添加进数组中
-					if(v.name === 'layout' || v.name === 'index') return
+					// if(v.name === 'layout' || v.name === 'index') return
 					arr.push({
 						name:v.name,
 						path:v.path,
