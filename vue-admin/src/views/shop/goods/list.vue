@@ -5,7 +5,9 @@
 				<!-- 引入封装组件 -->
 				<button-search ref="buttonSearch" placeholder="请输入商品名称" @search="searchEvent">
 					<template #left>
-						<el-button type="success" size="mini">发布商品</el-button>
+						<router-link :to="{name:'shop_goods_create'}">
+							<el-button type="success" size="mini">发布商品</el-button>
+						</router-link>
 						<el-button type="warning" size="mini">恢复商品</el-button>
 						<el-button type="danger" size="mini">批量删除</el-button>
 						<el-button size="mini">上架</el-button>
@@ -57,14 +59,42 @@
 				  <el-table-column prop="order" label="商品排序" align="center"></el-table-column>
 				  <el-table-column label="商品状态" align="center">
 					  <template slot-scope="scope">
-						  <el-button v-if="scope.row.status == 1" type="success" plain size="mini">上架</el-button>
-						  <el-button v-if="scope.row.status == 0" type="warning" plain size="mini">下架</el-button>
+						  <el-button type="success" plain size="mini" @click="">
+							  审核通过
+						  </el-button>
+						  <el-button class="ml-0 mt-2" type="danger" plain size="mini" @click="">
+							  审核拒绝
+						  </el-button>
+						  
+						 <!-- <el-button :type="scope.row.status ?'success':'danger'" plain size="mini" @click="changeStatus(scope.row)">{{scope.row.status ? '上架':'下架'}}</el-button> -->
 					  </template>
 				  </el-table-column>
 				  <el-table-column prop="stock" label="总库存" align="center"></el-table-column>
 				  <el-table-column prop="pprice" label="价格(元)" align="center"></el-table-column>
-				  <el-table-column prop="address" label="操作" align="center"></el-table-column>
+				  <el-table-column label="操作" align="center" width="150" style="display: flex;justify-content: center;">
+					   <template slot-scope="scope">
+						   <el-button-group class="d-flex">
+						     <el-button type="success" plain size="mini">修改</el-button>
+						     <el-button type="danger" plain  size="mini" @click="delectItem(scope.$index)">删除</el-button>
+						   </el-button-group>
+					   </template>
+				  </el-table-column>
 				</el-table>
+				<!-- 底部 -->
+				<!-- 底部显示内容区域 -->
+				<div style="height: 60px;"></div>
+				<el-footer class="border-top d-flex align-items-center px-0 position-fixed bg-white" style="left: 200px;bottom: 0;right: 0;z-index: 100;">
+				  <!-- 右边的分页 -->
+				  <div class="d-flex px-2">
+					  <el-pagination
+						:current-page="tableData[index].currentPage"
+						:page-sizes="[100, 200, 300, 400]"
+						:page-size="100"
+						layout="total, sizes, prev, pager, next, jumper"
+						:total="400">
+					  </el-pagination>
+				  </div>
+				</el-footer>
 			</el-tab-pane>
 		</el-tabs>
 	</div>
@@ -116,6 +146,12 @@
 			this._getDate()
 		},
 		methods:{
+			//商品的上下架
+			changeStatus(item){
+				console.log(item)
+				item.status = item.status === 1 ? 0 :1;
+			},
+			//生成数据
 			_getDate(){
 				for( var i=0; i<this.tabbars.length; i++){
 					this.tableData.push({
@@ -140,6 +176,21 @@
 						})
 					}
 				}
+			},
+			//删除数据
+			delectItem(index){
+				console.log(index)
+				this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+				  confirmButtonText: '确定',
+				  cancelButtonText: '取消',
+				  type: 'warning'
+				}).then(() => {
+					this.tableData[this.tabIndex].list.splice(index,1)
+				  this.$message({
+					type: 'success',
+					message: '删除成功!'
+				  });
+				})
 			},
 			 handleSelectionChange(val) {
 				 console.log(val,'valvalval')

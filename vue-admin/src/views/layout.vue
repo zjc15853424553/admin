@@ -91,9 +91,15 @@
 		watch:{
 			//监听路由的改变再次触发这个方法，刷新这个组件
 			'$route'(to,form){
+				//点击面包屑导航后台首页时改变左边的状态循环遍历这个联动大数组，通过to.name去找到submenu里面的pathname，然后通过下标去赋值到navbar。active  lefCurrentIndex上。
+				this.navBar.list.forEach((item,index)=>{
+					let i = item.submenu.findIndex(v=>v.pathname === to.name)
+					if(i!== -1){
+						this.navBar.active = index.toString()
+						this.lefCurrentIndex = i.toString()
+					}
+				})
 				//监听路由改变的时候进行本地存储
-				console.log(this.navBar.active,'toubu')
-				console.log(this.lefCurrentIndex,'dibu')
 				localStorage.setItem('navActive',JSON.stringify({
 					top:this.navBar.active || '0',
 					left:this.lefCurrentIndex || '0'
@@ -106,14 +112,12 @@
 				 let r = localStorage.getItem('navActive')
 				 if(r){
 					 r = JSON.parse(r)
-					 console.log(r)
 					 this.navBar.active = r.top;
 					 this.lefCurrentIndex = r.left;
 				 }
 			 },
 			 //面包屑导航
 			 getRouterBran(){
-			 	console.log(this.$route.matched)
 				//筛选出来带name值得路由
 				let a = this.$route.matched.filter(v=>v.name)
 				//定义一个空数组 
