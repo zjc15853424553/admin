@@ -41,7 +41,7 @@
 					<!-- 面包屑导航 -->
 					<div style="padding: 20px;margin: -20px;" class="border-bottom mb-3 bg-white" v-if="Bran.length >0">
 						<el-breadcrumb separator-class="el-icon-arrow-right">
-						  <el-breadcrumb-item v-for="(item,index) in Bran" :key="index" :to="{ path: item.path }">{{item.title}}</el-breadcrumb-item>
+						  <el-breadcrumb-item v-for="(item,index) in Bran" :key="index" :to="{ path: item.name }">{{item.title}}</el-breadcrumb-item>
 						</el-breadcrumb>
 					</div>
 					 <el-backtop target=".el-main" :bottom="100" :visibility-height='600'>
@@ -91,8 +91,6 @@
 		watch:{
 			//监听路由的改变再次触发这个方法，刷新这个组件
 			'$route'(to,form){
-				console.log(to,'totototo')
-				console.log(form,'formform')
 				//监听路由改变的时候进行本地存储
 				console.log(this.navBar.active,'toubu')
 				console.log(this.lefCurrentIndex,'dibu')
@@ -118,12 +116,12 @@
 			 	console.log(this.$route.matched)
 				//筛选出来带name值得路由
 				let a = this.$route.matched.filter(v=>v.name)
-				//定义一个空数组
+				//定义一个空数组 
 				let arr = [];
 				//利用forEach进行循环 筛选出来除了首页之外的路由
 				a.forEach((v,k)=>{
 					//过滤掉layout和index，如果不是这两个进行push添加进数组中
-					// if(v.name === 'layout' || v.name === 'index') return
+					if(v.name === 'index' || v.name === 'layout') return
 					arr.push({
 						name:v.name,
 						path:v.path,
@@ -157,6 +155,7 @@
 		      },
 			  //左边菜单栏下标选中
 			  slideSelect(key,keyPath){
+				  console.log(key,'keykeykeykey')
 				this.lefCurrentIndex = key;
 				//这里点击侧边导航跳转到相对应的路由页面，需要拿到this.navBar.list[this.navBar.active].submenu[key].pathname;   路由跳转根据name来进行跳转 需要在config.js中每一个对象中添加对应的pathname
 				let name = this.leftBarList[key].pathname;
